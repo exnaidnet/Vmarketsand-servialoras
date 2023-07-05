@@ -34,6 +34,7 @@ const upload = multer({
 /*Rutas*/
 const users = require('./routes/usersRoutes');
 const categories = require('./routes/categoriesRoutes');
+const shops = require('./routes/shopsRoutes');
 const products = require('./routes/productsRoutes');
 const address = require('./routes/addressRoutes');
 const orders = require('./routes/ordersRoutes');
@@ -59,6 +60,7 @@ app.set('port', port);
 orderDeliverySocket(io);
 
 users(app, upload );
+shops(app);
 categories(app);
 address(app);
 orders(app);
@@ -67,8 +69,8 @@ mercadoPagoRoutes(app);
 
 
 
-server.listen(3000, '192.168.1.2' || 'localhost', function(){
-    console.log('Aplicacion de Node JS-ServuBambi ' + port + ' iniciada...')
+server.listen(3000, '24.199.69.187' || 'localhost', function(){
+    console.log('Aplicacion de Node Vmarket, servibamvi, alorasshop en el puerto: ' + port + ' iniciada...')
 });
 
 

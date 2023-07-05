@@ -1,18 +1,19 @@
 const db = require('../config/config');
 
-const Category = {};
+const Shops = {};
 
-// Zona de Vmarkets
+// Zona Vmarkets
 
-Category.getAllV = () => {
+Shops.getAllV = () => {
 
     const sql = `
         SELECT
             id,
             name,
-            description
+            description,
+            create_for
         FROM
-            categoriesv
+            tiendasv
         ORDER BY
             name
     `;
@@ -20,36 +21,39 @@ Category.getAllV = () => {
     return db.manyOrNone(sql);
 }
 
-Category.createV = (category) => {
+Shops.createV = (shops) => {
     const sql = `
     INSERT INTO
-        categoriesv(
+        tiendasv(
             name,
             description,
+            create_for,
             created_at,
             updated_at
         )
-    VALUES ($1, $2, $3, $4) RETURNING id
+    VALUES ($1, $2, $3, $4, $5) RETURNING id
     `;
     return db.oneOrNone(sql, [
-        category.name,
-        category.description,
+        shops.name,
+        shops.description,
+        shops.created_for,
         new Date(),
         new Date()
     ]);
 }
 
-// Zona de Servibambi
+//Zona Servibambi 
 
-Category.getAllS = () => {
+Shops.getAllS = () => {
 
     const sql = `
         SELECT
             id,
             name,
-            description
+            description,
+            create_for
         FROM
-            categoriess
+            tiendass
         ORDER BY
             name
     `;
@@ -57,36 +61,39 @@ Category.getAllS = () => {
     return db.manyOrNone(sql);
 }
 
-Category.createS = (category) => {
+Shops.createS = (shops) => {
     const sql = `
     INSERT INTO
-        categoriess(
+        tiendass(
             name,
             description,
+            create_for,
             created_at,
             updated_at
         )
-    VALUES ($1, $2, $3, $4) RETURNING id
+    VALUES ($1, $2, $3, $4, $5) RETURNING id
     `;
     return db.oneOrNone(sql, [
-        category.name,
-        category.description,
+        shops.name,
+        shops.description,
+        shops.created_for,
         new Date(),
         new Date()
     ]);
 }
 
-// Zona de Alorasshop
+//Zona AlorasShop 
 
-Category.getAllA = () => {
+Shops.getAllA = () => {
 
     const sql = `
         SELECT
             id,
             name,
-            description
+            description,
+            create_for
         FROM
-            categoriesa
+            tiendasa
         ORDER BY
             name
     `;
@@ -94,23 +101,28 @@ Category.getAllA = () => {
     return db.manyOrNone(sql);
 }
 
-Category.createA = (category) => {
+Shops.createA = (shops) => {
     const sql = `
     INSERT INTO
-        categoriea(
+        tiendasa(
             name,
             description,
+            create_for,
             created_at,
             updated_at
         )
-    VALUES ($1, $2, $3, $4) RETURNING id
+    VALUES ($1, $2, $3, $4, $5) RETURNING id
     `;
     return db.oneOrNone(sql, [
-        category.name,
-        category.description,
+        shops.name,
+        shops.description,
+        shops.created_for,
         new Date(),
         new Date()
     ]);
 }
 
-module.exports = Category;
+
+
+
+module.exports = Shops;

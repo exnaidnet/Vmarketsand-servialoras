@@ -2,7 +2,10 @@ const db = require('../config/config');
 
 const Product = {};
 
-Product.findByCategory = (id_category) => {
+
+// Zona Vmarkets 
+
+Product.findByCategoryV = (id_category) => {
     const sql = `
     SELECT
         P.id,
@@ -14,9 +17,9 @@ Product.findByCategory = (id_category) => {
         P.image3,
         P.id_category
     FROM
-        products AS P
+        productsv AS P
     INNER JOIN
-        categories AS C
+        categoriesv AS C
     ON
         P.id_category = C.id
     WHERE
@@ -26,7 +29,7 @@ Product.findByCategory = (id_category) => {
     return db.manyOrNone(sql, id_category);
 }
 
-Product.findByCategoryAndProductName = (id_category, product_name) => {
+Product.findByCategoryAndProductNameV = (id_category, product_name) => {
     const sql = `
     SELECT
         P.id,
@@ -38,9 +41,9 @@ Product.findByCategoryAndProductName = (id_category, product_name) => {
         P.image3,
         P.id_category
     FROM
-        products AS P
+        productsv AS P
     INNER JOIN
-        categories AS C
+        categoriesv AS C
     ON
         P.id_category = C.id
     WHERE
@@ -51,10 +54,10 @@ Product.findByCategoryAndProductName = (id_category, product_name) => {
 }
 
 
-Product.create = (product) => {
+Product.createV = (product) => {
     const sql = `
     INSERT INTO
-        products(
+        productsv(
             name,
             description,
             price,
@@ -80,10 +83,10 @@ Product.create = (product) => {
     ]);
 }
 
-Product.update = (product) => {
+Product.updateV = (product) => {
     const sql = `
     UPDATE
-        products
+        productsv
     SET
         name = $2,
         description = $3,
@@ -109,5 +112,222 @@ Product.update = (product) => {
     ]);
 }
 
+// Zona Servibambi 
+
+Product.findByCategoryS = (id_category) => {
+    const sql = `
+    SELECT
+        P.id,
+        P.name,
+        P.description,
+        P.price,
+        P.image1,
+        P.image2,
+        P.image3,
+        P.id_category
+    FROM
+        productss AS P
+    INNER JOIN
+        categoriess AS C
+    ON
+        P.id_category = C.id
+    WHERE
+        C.id = $1
+    `;
+
+    return db.manyOrNone(sql, id_category);
+}
+
+Product.findByCategoryAndProductNameS = (id_category, product_name) => {
+    const sql = `
+    SELECT
+        P.id,
+        P.name,
+        P.description,
+        P.price,
+        P.image1,
+        P.image2,
+        P.image3,
+        P.id_category
+    FROM
+        productss AS P
+    INNER JOIN
+        categoriess AS C
+    ON
+        P.id_category = C.id
+    WHERE
+        C.id = $1 AND p.name ILIKE $2
+    `;
+
+    return db.manyOrNone(sql, [id_category, `%${product_name}%`]);
+}
+
+
+Product.createS = (product) => {
+    const sql = `
+    INSERT INTO
+        productss(
+            name,
+            description,
+            price,
+            image1,
+            image2,
+            image3,
+            id_category,
+            created_at,
+            updated_at
+        )
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
+    `;
+    return db.oneOrNone(sql, [
+        product.name,
+        product.description,
+        product.price,
+        product.image1,
+        product.image2,
+        product.image3,
+        product.id_category,
+        new Date(),
+        new Date()
+    ]);
+}
+
+Product.updateS = (product) => {
+    const sql = `
+    UPDATE
+        productss
+    SET
+        name = $2,
+        description = $3,
+        price = $4,
+        image1 = $5,
+        image2 = $6,
+        image3 = $7,
+        id_category = $8,
+        updated_at = $9
+    WHERE
+        id = $1
+    `;
+    return db.none(sql, [
+        product.id,
+        product.name,
+        product.description,
+        product.price,
+        product.image1,
+        product.image2,
+        product.image3,
+        product.id_category,
+        new Date()
+    ]);
+}
+
+// Zona Alorasshop 
+
+Product.findByCategoryA = (id_category) => {
+    const sql = `
+    SELECT
+        P.id,
+        P.name,
+        P.description,
+        P.price,
+        P.image1,
+        P.image2,
+        P.image3,
+        P.id_category
+    FROM
+        productsa AS P
+    INNER JOIN
+        categoriesa AS C
+    ON
+        P.id_category = C.id
+    WHERE
+        C.id = $1
+    `;
+
+    return db.manyOrNone(sql, id_category);
+}
+
+Product.findByCategoryAndProductNameA = (id_category, product_name) => {
+    const sql = `
+    SELECT
+        P.id,
+        P.name,
+        P.description,
+        P.price,
+        P.image1,
+        P.image2,
+        P.image3,
+        P.id_category
+    FROM
+        productsa AS P
+    INNER JOIN
+        categoriesa AS C
+    ON
+        P.id_category = C.id
+    WHERE
+        C.id = $1 AND p.name ILIKE $2
+    `;
+
+    return db.manyOrNone(sql, [id_category, `%${product_name}%`]);
+}
+
+
+Product.createA = (product) => {
+    const sql = `
+    INSERT INTO
+        productsa(
+            name,
+            description,
+            price,
+            image1,
+            image2,
+            image3,
+            id_category,
+            created_at,
+            updated_at
+        )
+    VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id
+    `;
+    return db.oneOrNone(sql, [
+        product.name,
+        product.description,
+        product.price,
+        product.image1,
+        product.image2,
+        product.image3,
+        product.id_category,
+        new Date(),
+        new Date()
+    ]);
+}
+
+Product.updateA = (product) => {
+    const sql = `
+    UPDATE
+        productsa
+    SET
+        name = $2,
+        description = $3,
+        price = $4,
+        image1 = $5,
+        image2 = $6,
+        image3 = $7,
+        id_category = $8,
+        updated_at = $9
+    WHERE
+        id = $1
+    `;
+    return db.none(sql, [
+        product.id,
+        product.name,
+        product.description,
+        product.price,
+        product.image1,
+        product.image2,
+        product.image3,
+        product.id_category,
+        new Date()
+    ]);
+}
 
 module.exports = Product;

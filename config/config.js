@@ -11,13 +11,16 @@ types.setTypeParser(1114, function(stringValue){
 });
 
 const databaseConfig = {
-    'host': '127.0.0.1',
-    'port': 5432,
-    'database': 'servi_bambi',
-    'user': 'postgres',
-    'password': 'LOCOferr5227=)'
+    'host': 'db-postgresql-sfo3-44369-vsa-do-user-11075757-0.b.db.ondigitalocean.com',
+    'port': 25060,
+    'database': 'defaultdb',
+    'user': 'doadmin',
+    'password': 'AVNS_SkY_fOKNX3BF33ghRYi',
+    'sslmode' : require,
 };
 
 const db = pgp(databaseConfig);
 
 module.exports = db;
+
+//clave digital icean LocoFerr27=)ferr

@@ -1,18 +1,18 @@
-const Category = require('../models/category');
+const Shops = require('../models/shop');
 
 module.exports = {
-
+// Zona Vmarkets
     async getAllV(req, res, next) {
 
         try {
-            const data = await Category.getAllV();
-            console.log(`Categorias ${JSON.stringify(data)}`);
+            const data = await Shops.getAllV();
+            console.log(`Tiendas ${JSON.stringify(data)}`);
             return res.status(201).json(data);
         } 
         catch (error) {
             console.log(`Error ${error}`);    
             return res.status(501).json({
-                message: 'Hubo un error al tratar de obtener las categorias',
+                message: 'Hubo un error al tratar de obtener las tiendas',
                 error: error,
                 success: false
             })
@@ -22,13 +22,13 @@ module.exports = {
 
     async createV(req, res, next) {
         try {
-            const category = req.body;
-            console.log(`Categoria enviada: ${category}`);
+            const shop = req.body;
+            console.log(`Tienda enviada: ${shop}`);
 
-            const data = await Category.createV(category);
+            const data = await Shops.createV(shop);
 
             return res.status(201).json({
-                message: 'La categoria se creo correctamente',
+                message: 'La tienda se creo correctamente',
                 success: true,
                 data: data.id
             });
@@ -37,26 +37,26 @@ module.exports = {
         catch (error) {
             console.log(`Error: ${error}`);    
             return res.status(501).json({
-                message: 'Hubo un error al crear la categoria',
+                message: 'Hubo un error al crear la tienda',
                 success: false,
                 error: error
             });
         }
     },
 
-    //------> Servibambi 
+    // Zona Servibambi 
 
     async getAllS(req, res, next) {
 
         try {
-            const data = await Category.getAllS();
-            console.log(`Categorias ${JSON.stringify(data)}`);
+            const data = await Shops.getAllS();
+            console.log(`Tiendas ${JSON.stringify(data)}`);
             return res.status(201).json(data);
         } 
         catch (error) {
             console.log(`Error ${error}`);    
             return res.status(501).json({
-                message: 'Hubo un error al tratar de obtener las categorias',
+                message: 'Hubo un error al tratar de obtener las tiendas',
                 error: error,
                 success: false
             })
@@ -66,13 +66,13 @@ module.exports = {
 
     async createS(req, res, next) {
         try {
-            const category = req.body;
-            console.log(`Categoria enviada: ${category}`);
+            const shop = req.body;
+            console.log(`Tienda enviada: ${shop}`);
 
-            const data = await Category.createS(category);
+            const data = await Shops.createS(shop);
 
             return res.status(201).json({
-                message: 'La categoria se creo correctamente',
+                message: 'La tienda se creo correctamente',
                 success: true,
                 data: data.id
             });
@@ -81,26 +81,26 @@ module.exports = {
         catch (error) {
             console.log(`Error: ${error}`);    
             return res.status(501).json({
-                message: 'Hubo un error al crear la categoria',
+                message: 'Hubo un error al crear la tienda',
                 success: false,
                 error: error
             });
         }
     },
 
-    //-------------> Alorashop 
+    // Zona Alorasshop 
 
     async getAllA(req, res, next) {
 
         try {
-            const data = await Category.getAllA();
-            console.log(`Categorias ${JSON.stringify(data)}`);
+            const data = await Shops.getAllA();
+            console.log(`Tiendas ${JSON.stringify(data)}`);
             return res.status(201).json(data);
         } 
         catch (error) {
             console.log(`Error ${error}`);    
             return res.status(501).json({
-                message: 'Hubo un error al tratar de obtener las categorias',
+                message: 'Hubo un error al tratar de obtener las tiendas',
                 error: error,
                 success: false
             })
@@ -110,13 +110,13 @@ module.exports = {
 
     async createA(req, res, next) {
         try {
-            const category = req.body;
-            console.log(`Categoria enviada: ${category}`);
+            const shop = req.body;
+            console.log(`Tienda enviada: ${shop}`);
 
-            const data = await Category.createA(category);
+            const data = await Shops.createA(shop);
 
             return res.status(201).json({
-                message: 'La categoria se creo correctamente',
+                message: 'La tienda se creo correctamente',
                 success: true,
                 data: data.id
             });
@@ -125,7 +125,7 @@ module.exports = {
         catch (error) {
             console.log(`Error: ${error}`);    
             return res.status(501).json({
-                message: 'Hubo un error al crear la categoria',
+                message: 'Hubo un error al crear la tienda',
                 success: false,
                 error: error
             });

@@ -2,9 +2,23 @@ const ProductsController = require('../controllers/productsController');
 const passport = require('passport');
 
 module.exports = (app, upload) => {
+    // Vmarkets
+    app.get('/api/products/findByCategoryV/:id_category', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryV);
+    app.get('/api/products/findByCategoryAndProductNameV/:id_category/:product_name', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryAndProductNameV);
 
-    app.get('/api/products/findByCategory/:id_category', passport.authenticate('jwt', {session: false}), ProductsController.findByCategory);
-    app.get('/api/products/findByCategoryAndProductName/:id_category/:product_name', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryAndProductName);
+    app.post('/api/products/createV', passport.authenticate('jwt', {session: false}), upload.array('image', 3), ProductsController.createV);
 
-    app.post('/api/products/create', passport.authenticate('jwt', {session: false}), upload.array('image', 3), ProductsController.create);
+     // Sertvibambi 
+     app.get('/api/products/findByCategoryS/:id_category', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryS);
+     app.get('/api/products/findByCategoryAndProductNameS/:id_category/:product_name', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryAndProductNameS);
+ 
+     app.post('/api/products/createS', passport.authenticate('jwt', {session: false}), upload.array('image', 3), ProductsController.createS);
+ 
+      // Aloras shop 
+    app.get('/api/products/findByCategoryA/:id_category', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryA);
+    app.get('/api/products/findByCategoryAndProductNameA/:id_category/:product_name', passport.authenticate('jwt', {session: false}), ProductsController.findByCategoryAndProductNameA);
+
+    app.post('/api/products/createA', passport.authenticate('jwt', {session: false}), upload.array('image', 3), ProductsController.createA);
+
+
 }

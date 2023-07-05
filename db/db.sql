@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS roles CASCADE;
-CREATE TABLE roles(
+DROP TABLE IF EXISTS rolesV CASCADE;
+CREATE TABLE rolesV(
 	id BIGSERIAL PRIMARY KEY,
 	name VARCHAR(180) NOT NULL UNIQUE,
 	image VARCHAR(255) NULL, 
@@ -8,7 +8,7 @@ CREATE TABLE roles(
 	updated_at TIMESTAMP(0) NOT NULL
 );
 
-INSERT INTO roles (
+INSERT INTO rolesV (
 	name,
 	route,
 	created_at,
@@ -22,7 +22,7 @@ VALUES(
 );
 
 
-INSERT INTO roles (
+INSERT INTO rolesV (
 	name,
 	route,
 	created_at,
@@ -30,12 +30,12 @@ INSERT INTO roles (
 )
 VALUES(
 	'RESTAURANTE',
-	'restaurant/orders/list',
+	'sell/orders/list',
 	'2021-05-22',
 	'2021-05-22'
 );
 
-INSERT INTO roles (
+INSERT INTO rolesV (
 	name,
 	route,
 	created_at,
@@ -49,8 +49,8 @@ VALUES(
 );
 
 
-DROP TABLE IF EXISTS users CASCADE;
-CREATE TABLE users(
+DROP TABLE IF EXISTS usersV CASCADE;
+CREATE TABLE usersV(
 	id BIGSERIAL PRIMARY KEY,
 	email VARCHAR(255) NOT NULL UNIQUE,
 	name VARCHAR(255) NOT NULL,
@@ -65,19 +65,19 @@ CREATE TABLE users(
 	updated_at TIMESTAMP(0) NOT NULL
 );
 
-DROP TABLE IF EXISTS user_has_roles CASCADE;
-CREATE TABLE user_has_roles(
+DROP TABLE IF EXISTS user_has_rolesV CASCADE;
+CREATE TABLE user_has_rolesV(
 	id_user BIGSERIAL NOT NULL,
 	id_rol BIGSERIAL NOT NULL,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
-	FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(id_rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_user) REFERENCES usersV(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_rol) REFERENCES rolesV(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	PRIMARY KEY(id_user, id_rol)
 );
 
-DROP TABLE IF EXISTS categories CASCADE;
-CREATE TABLE categories (
+DROP TABLE IF EXISTS categoriesesV CASCADE;
+CREATE TABLE categoriesV (
 	id BIGSERIAL PRIMARY KEY,
 	name VARCHAR(180) NOT NULL UNIQUE,
 	description VARCHAR(255) NOT NULL,
@@ -86,8 +86,8 @@ CREATE TABLE categories (
 );
 
 
-DROP TABLE IF EXISTS products CASCADE;
-CREATE TABLE products(
+DROP TABLE IF EXISTS productsesV CASCADE;
+CREATE TABLE productsV(
 	id BIGSERIAL PRIMARY KEY,
 	name VARCHAR(180) NOT NULL UNIQUE,
 	description VARCHAR(255) NOT NULL,
@@ -98,11 +98,11 @@ CREATE TABLE products(
 	id_category BIGINT NOT NULL,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
-	FOREIGN KEY(id_category) REFERENCES categories(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(id_category) REFERENCES categoriesV(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS address CASCADE;
-CREATE TABLE address(
+DROP TABLE IF EXISTS addressV CASCADE;
+CREATE TABLE addressV(
 	id BIGSERIAL PRIMARY KEY,
 	id_user BIGINT NOT NULL,
 	address VARCHAR(255) NOT NULL,
@@ -111,12 +111,12 @@ CREATE TABLE address(
 	lng DECIMAL DEFAULT 0,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
-	FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(id_user) REFERENCES usersV(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
-DROP TABLE IF EXISTS orders CASCADE;
-CREATE TABLE orders(
+DROP TABLE IF EXISTS ordersV CASCADE;
+CREATE TABLE ordersV(
 	id BIGSERIAL PRIMARY KEY,
 	id_client BIGINT NOT NULL,
 	id_delivery BIGINT NULL,
@@ -127,19 +127,318 @@ CREATE TABLE orders(
 	timestamp BIGINT NOT NULL,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
-	FOREIGN KEY(id_client) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(id_delivery) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(id_address) REFERENCES address(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(id_client) REFERENCES usersV(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_delivery) REFERENCES usersV(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_address) REFERENCES addressV(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS order_has_products CASCADE;
-CREATE TABLE order_has_products(
+DROP TABLE IF EXISTS order_has_productsV CASCADE;
+CREATE TABLE order_has_productsV(
 	id_order BIGINT NOT NULL,
 	id_product BIGINT NOT NULL,
 	quantity BIGINT NOT NULL,
 	created_at TIMESTAMP(0) NOT NULL,
 	updated_at TIMESTAMP(0) NOT NULL,
 	PRIMARY KEY(id_order, id_product),
-	FOREIGN KEY(id_order) REFERENCES orders(id) ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY(id_product) REFERENCES products(id) ON UPDATE CASCADE ON DELETE CASCADE
+	FOREIGN KEY(id_order) REFERENCES ordersV(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_product) REFERENCES productsV(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
+
+
+/* Comienza base de datos Servibambi */
+
+DROP TABLE IF EXISTS rolesS CASCADE;
+CREATE TABLE rolesS(
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(180) NOT NULL UNIQUE,
+	image VARCHAR(255) NULL, 
+	route VARCHAR(255) NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL
+);
+
+INSERT INTO rolesS (
+	name,
+	route,
+	created_at,
+	updated_at
+)
+VALUES(
+	'CLIENTE',
+	'client/products/list',
+	'2021-05-22',
+	'2021-05-22'
+);
+
+
+INSERT INTO rolesS (
+	name,
+	route,
+	created_at,
+	updated_at
+)
+VALUES(
+	'RESTAURANTE',
+	'sell/orders/list',
+	'2021-05-22',
+	'2021-05-22'
+);
+
+INSERT INTO rolesS (
+	name,
+	route,
+	created_at,
+	updated_at
+)
+VALUES(
+	'REPARTIDOR',
+	'delivery/orders/list',
+	'2021-05-22',
+	'2021-05-22'
+);
+
+
+DROP TABLE IF EXISTS usersS CASCADE;
+CREATE TABLE usersS(
+	id BIGSERIAL PRIMARY KEY,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	name VARCHAR(255) NOT NULL,
+	lastname VARCHAR(255) NOT NULL,
+	phone VARCHAR(80) NOT NULL UNIQUE,
+	image VARCHAR(255) NULL,
+	password VARCHAR(255) NOT NULL,
+	is_available BOOLEAN NULL,
+	session_token VARCHAR(255) NULL,
+	notification_token VARCHAR(255) NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL
+);
+
+DROP TABLE IF EXISTS user_has_rolesS CASCADE;
+CREATE TABLE user_has_rolesS(
+	id_user BIGSERIAL NOT NULL,
+	id_rol BIGSERIAL NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_user) REFERENCES usersS(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_rol) REFERENCES rolesS(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY(id_user, id_rol)
+);
+
+DROP TABLE IF EXISTS categoriesesS CASCADE;
+CREATE TABLE categoriesS (
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(180) NOT NULL UNIQUE,
+	description VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL
+);
+
+
+DROP TABLE IF EXISTS productsesS CASCADE;
+CREATE TABLE productsS(
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(180) NOT NULL UNIQUE,
+	description VARCHAR(255) NOT NULL,
+	price DECIMAL DEFAULT 0,
+	image1 VARCHAR(255) NOT NULL,
+	image2 VARCHAR(255) NULL,
+	image3 VARCHAR(255) NULL,
+	id_category BIGINT NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_category) REFERENCES categoriesS(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS addressS CASCADE;
+CREATE TABLE addressS(
+	id BIGSERIAL PRIMARY KEY,
+	id_user BIGINT NOT NULL,
+	address VARCHAR(255) NOT NULL,
+	neighborhood VARCHAR(255) NOT NULL,
+	lat DECIMAL DEFAULT 0,
+	lng DECIMAL DEFAULT 0,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_user) REFERENCES usersS(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+DROP TABLE IF EXISTS ordersS CASCADE;
+CREATE TABLE ordersS(
+	id BIGSERIAL PRIMARY KEY,
+	id_client BIGINT NOT NULL,
+	id_delivery BIGINT NULL,
+	id_address BIGINT NOT NULL,
+	lat DECIMAL DEFAULT 0,
+	lng DECIMAL DEFAULT 0,
+	status VARCHAR(90) NOT NULL,
+	timestamp BIGINT NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_client) REFERENCES usersS(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_delivery) REFERENCES usersS(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_address) REFERENCES addressS(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS order_has_productsS CASCADE;
+CREATE TABLE order_has_productsS(
+	id_order BIGINT NOT NULL,
+	id_product BIGINT NOT NULL,
+	quantity BIGINT NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	PRIMARY KEY(id_order, id_product),
+	FOREIGN KEY(id_order) REFERENCES ordersS(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_product) REFERENCES productsS(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+/* Comienza bd Alorasshop*/
+
+DROP TABLE IF EXISTS rolesA CASCADE;
+CREATE TABLE rolesA(
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(180) NOT NULL UNIQUE,
+	image VARCHAR(255) NULL, 
+	route VARCHAR(255) NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL
+);
+
+INSERT INTO rolesA (
+	name,
+	route,
+	created_at,
+	updated_at
+)
+VALUES(
+	'CLIENTE',
+	'client/products/list',
+	'2021-05-22',
+	'2021-05-22'
+);
+
+
+INSERT INTO rolesA (
+	name,
+	route,
+	created_at,
+	updated_at
+)
+VALUES(
+	'RESTAURANTE',
+	'sell/orders/list',
+	'2021-05-22',
+	'2021-05-22'
+);
+
+INSERT INTO rolesA (
+	name,
+	route,
+	created_at,
+	updated_at
+)
+VALUES(
+	'REPARTIDOR',
+	'delivery/orders/list',
+	'2021-05-22',
+	'2021-05-22'
+);
+
+
+DROP TABLE IF EXISTS usersA CASCADE;
+CREATE TABLE usersA(
+	id BIGSERIAL PRIMARY KEY,
+	email VARCHAR(255) NOT NULL UNIQUE,
+	name VARCHAR(255) NOT NULL,
+	lastname VARCHAR(255) NOT NULL,
+	phone VARCHAR(80) NOT NULL UNIQUE,
+	image VARCHAR(255) NULL,
+	password VARCHAR(255) NOT NULL,
+	is_available BOOLEAN NULL,
+	session_token VARCHAR(255) NULL,
+	notification_token VARCHAR(255) NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL
+);
+
+DROP TABLE IF EXISTS user_has_rolesA CASCADE;
+CREATE TABLE user_has_rolesA(
+	id_user BIGSERIAL NOT NULL,
+	id_rol BIGSERIAL NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_user) REFERENCES usersA(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_rol) REFERENCES rolesA(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	PRIMARY KEY(id_user, id_rol)
+);
+
+DROP TABLE IF EXISTS categoriesesA CASCADE;
+CREATE TABLE categoriesA (
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(180) NOT NULL UNIQUE,
+	description VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL
+);
+
+
+DROP TABLE IF EXISTS productsesA CASCADE;
+CREATE TABLE productsA(
+	id BIGSERIAL PRIMARY KEY,
+	name VARCHAR(180) NOT NULL UNIQUE,
+	description VARCHAR(255) NOT NULL,
+	price DECIMAL DEFAULT 0,
+	image1 VARCHAR(255) NOT NULL,
+	image2 VARCHAR(255) NULL,
+	image3 VARCHAR(255) NULL,
+	id_category BIGINT NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_category) REFERENCES categoriesA(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS addressA CASCADE;
+CREATE TABLE addressA(
+	id BIGSERIAL PRIMARY KEY,
+	id_user BIGINT NOT NULL,
+	address VARCHAR(255) NOT NULL,
+	neighborhood VARCHAR(255) NOT NULL,
+	lat DECIMAL DEFAULT 0,
+	lng DECIMAL DEFAULT 0,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_user) REFERENCES usersA(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+DROP TABLE IF EXISTS ordersA CASCADE;
+CREATE TABLE ordersA(
+	id BIGSERIAL PRIMARY KEY,
+	id_client BIGINT NOT NULL,
+	id_delivery BIGINT NULL,
+	id_address BIGINT NOT NULL,
+	lat DECIMAL DEFAULT 0,
+	lng DECIMAL DEFAULT 0,
+	status VARCHAR(90) NOT NULL,
+	timestamp BIGINT NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	FOREIGN KEY(id_client) REFERENCES usersA(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_delivery) REFERENCES usersA(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_address) REFERENCES addressA(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS order_has_productsA CASCADE;
+CREATE TABLE order_has_productsA(
+	id_order BIGINT NOT NULL,
+	id_product BIGINT NOT NULL,
+	quantity BIGINT NOT NULL,
+	created_at TIMESTAMP(0) NOT NULL,
+	updated_at TIMESTAMP(0) NOT NULL,
+	PRIMARY KEY(id_order, id_product),
+	FOREIGN KEY(id_order) REFERENCES ordersA(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY(id_product) REFERENCES productsA(id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+

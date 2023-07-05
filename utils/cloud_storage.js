@@ -7,11 +7,11 @@ const uuid = uuidv4();
 
 
 const storage = new Storage({
-    projectId: "servi-bambi",
+    projectId: "vmarkets-88395",
     keyFilename: './serviceAccountKey.json'
 });
 
-const bucket = storage.bucket("gs://servi-bambi.appspot.com/");
+const bucket = storage.bucket("gs://vmarkets-88395.appspot.com");
 
 /**
  * Subir el archivo a Firebase Storage
